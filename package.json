@@ -1,0 +1,27 @@
+{
+  "name": "iridium-docs",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Documentation site for Iridium.",
+  "license": "MIT",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Iridium-Group/iridium-docs.git"
+  },
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test --test-timeout=30000 test/*.test.mjs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "dependencies": {
+    "marked": "^18.2.1"
+  },
+  "devDependencies": {
+    "prettier": "^3.10.1"
+  }
+}
