@@ -1,0 +1,49 @@
+# Deploys with the Vercel CLI. Does nothing until VERCEL_TOKEN, VERCEL_ORG_ID and
+# VERCEL_PROJECT_ID are set as repository secrets. Skip this file if you use Vercel's own
+# GitHub integration, or every push will deploy twice.
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  vercel:
+    # Pull requests from forks never get secrets, so they are not deployed.
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    steps:
+      - name: Check for Vercel secrets
+        id: gate
+        run: |
+          if [ -n "$VERCEL_TOKEN" ] && [ -n "$VERCEL_ORG_ID" ] && [ -n "$VERCEL_PROJECT_ID" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Vercel secrets are not set; skipping deploy."
+          fi
+      - uses: actions/checkout@v4
+        if: steps.gate.outputs.ready == 'true'
+      - uses: actions/setup-node@v4
+        if: steps.gate.outputs.ready == 'true'
+        with:
+          node-version: 24
+      - name: Deploy
+        if: steps.gate.outputs.ready == 'true'
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = "push" ]; then target=production; else target=preview; fi
+          npx --yes vercel@41 pull --yes --environment="$target" --token="$VERCEL_TOKEN"
+          if [ "$target" = production ]; then flag=--prod; else flag=; fi
+          npx --yes vercel@41 build $flag --token="$VERCEL_TOKEN"
+          npx --yes vercel@41 deploy --prebuilt $flag --token="$VERCEL_TOKEN"
