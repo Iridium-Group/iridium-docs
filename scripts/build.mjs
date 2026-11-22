@@ -72,8 +72,8 @@ function page(title, body, current) {
 @font-face{font-family:Inter;font-weight:100 900;font-display:swap;src:url(fonts/inter-latin-wght-normal.woff2) format("woff2")}
 @font-face{font-family:"IBM Plex Mono";font-weight:400;font-display:swap;src:url(fonts/ibm-plex-mono-latin-400-normal.woff2) format("woff2")}
 @font-face{font-family:"IBM Plex Mono";font-weight:500;font-display:swap;src:url(fonts/ibm-plex-mono-latin-500-normal.woff2) format("woff2")}
-:root{color-scheme:light dark;--bg:#f5f5f1;--fg:#17191b;--mut:#686c6e;--line:#d6d8d2;--acc:#4a6a20;--signal:#b8d98a;--code:#e7e8e3;--sans:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace}
-@media(prefers-color-scheme:dark){:root{--bg:#17191b;--fg:#f5f5f1;--mut:#929697;--line:#303438;--acc:#b8d98a;--code:#1f2325}}
+:root{color-scheme:light dark;--bg:#fafafa;--fg:#111;--mut:#5e5e5e;--line:#dcdcdc;--acc:#111;--signal:#111;--code:#efefef;--sans:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+@media(prefers-color-scheme:dark){:root{--bg:#141414;--fg:#fafafa;--mut:#a3a3a3;--line:#2e2e2e;--acc:#fafafa;--signal:#fafafa;--code:#1d1d1d}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 var(--sans);-webkit-font-smoothing:antialiased}
 .wrap{display:grid;grid-template-columns:248px minmax(0,1fr);max-width:1120px;margin:0 auto}
