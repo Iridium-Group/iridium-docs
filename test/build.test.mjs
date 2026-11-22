@@ -11,13 +11,14 @@ describe('docs build', () => {
     const ids = await build('content', out);
     const files = await readdir(out);
     for (const id of ids) assert.ok(files.includes(`${id}.html`), id);
+    assert.ok((await readdir(join(out, 'fonts'))).includes('inter-latin-wght-normal.woff2'));
     assert.equal(ids.length, NAV.flatMap((g) => g.pages).length);
   });
   it('has no broken links between pages', async () => {
     const out = await mkdtemp(join(tmpdir(), 'docs-'));
     await build('content', out);
     const files = new Set(await readdir(out));
-    for (const f of files) {
+    for (const f of [...files].filter((f) => f.endsWith('.html'))) {
       const html = await readFile(join(out, f), 'utf8');
       for (const [, href] of html.matchAll(/href="([^"#:]+\.html)(?:#[^"]*)?"/g)) {
         assert.ok(files.has(href), `${f} links to missing ${href}`);
